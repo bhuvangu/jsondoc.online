@@ -6,7 +6,8 @@ Document your json contract, when sharing with other teams.
 This is tool i required in my job, where we might need to share the json contract with other teams, but we havnt implemented it yet and want to keep it documented.   
 
 
-Documenting a json in google doc looses the readability and intutiveness, jsondoc.online allow json structure to be playable and keep documentation to handy.
+Documenting a json in google doc looses the readability and intutiveness, jsondoc.online allow json structure to be playable and keep documentation to handy.  
+JsonSchema not standard.. In theory JSON Schema could serve this purpose, but in practice I am not sure it does.
 
 # Tech Stack
 
