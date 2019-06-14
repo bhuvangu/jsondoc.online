@@ -19,6 +19,7 @@ I wanted to try server less hence below tech stack.
 5. website hosted on google cloud storage.
 6. Vanilla JS, Jquery.
 7. Attack Protection with google nocaptcha[invisiable]
+8. CSS most from https://github.com/josdejong/jsoneditor/
 
 
 
