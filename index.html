@@ -1,0 +1,1563 @@
+<!doctype html>
+<html lang="en">
+   <head>
+      <!-- Required meta tags -->
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <!-- Bootstrap CSS -->
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+      <link href="./jsonviewer.css" rel="stylesheet">
+      <link href="https://cdnjs.cloudflare.com/ajax/libs/intro.js/2.9.3/introjs.css" rel="stylesheet">
+      <script type="text/javascript" src="./uploader.js"></script>
+      <title>Online Json Documentation tool</title>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+      <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simplebar@latest/dist/simplebar.css">
+      <script src="https://cdn.jsdelivr.net/npm/simplebar@latest/dist/simplebar.min.js"></script>
+      <!-- modal jquery-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+   </head>
+   <style>
+      body, html {
+      font-family: arial,sans-serif;
+      font-size: 11pt;
+      }
+      span.header-light {
+      color: gray
+      }
+      #header {
+      width: 100%;
+      height: 40px;
+      background: #4d4d4d ;
+      box-shadow: 0 0 4px 2px rgba(0,0,0,.4);
+      color: #fff
+      }
+      #logo {
+      height: 32px;
+      margin: 4px 10px;
+      border: none
+      }
+      #name-menu {
+      position: absolute;
+      left: 220px;
+      top: 7px
+      }
+      #name-menu div {
+      display: inline-block
+      }
+      #name {
+      line-height: 24px;
+      color: #fff;
+      padding: 0 10px;
+      border: 1px solid #737373;
+      border-radius: 3px;
+      background: rgba(115,115,115,.5);
+      -moz-box-shadow: inset 0 0 10px #000;
+      -webkit-box-shadow: inset 0 0 10px #000;
+      box-shadow: inset 0 0 10px #000;
+      display: none
+      }
+      #name-status,#name-status a {
+      color: grey
+      }
+      #name-status a:hover {
+      color: #ee422e
+      }
+      #menu {    
+      top: 5px;
+      right: 15px;
+      font-size: 11pt
+      }
+      #menu ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      clear: both
+      }
+      #menu ul li {
+      color: #e6e6e6;
+      background: 0 0;
+      border: none;
+      border-right: 1px solid #737373;
+      height: 30px;
+      padding: 0;
+      margin: 0;
+      float: left;
+      position: relative;
+      text-decoration: none
+      }
+      #menu ul li:first-child {
+      border-left: 1px solid #737373
+      }
+      #menu ul li:hover {
+      color: #fff;
+      background-color: #737373
+      }
+      #menu ul li ul {
+      display: none
+      }
+      #menu ul li.active>ul,#menu ul li:hover>ul {
+      display: block
+      }
+      #menu ul li ul {
+      position: absolute;
+      top: 30px;
+      left: 0;
+      z-index: 999;
+      background: #f5f5f5;
+      border: 1px solid #d3d3d3;
+      box-shadow: 0 0 15px rgba(128,128,128,.5)
+      }
+      #menu ul li ul li {
+      color: #737373;
+      background: 0 0;
+      border: none;
+      margin: 0;
+      padding: 0
+      }
+      #menu ul li ul li:first-child {
+      border-left: none
+      }
+      #menu ul li ul li:hover {
+      color: #737373;
+      background-color: #fff
+      }
+      #menu a {
+      padding: 6px 10px;
+      display: block;
+      cursor: pointer;
+      text-decoration: none;
+      color: #fff
+      }
+      #menu ul li ul li {
+      width: 200px
+      }
+      #menu ul li ul li a {
+      color: #737373
+      }
+      #menu ul li ul #filesList {
+      border-top: 1px solid #d3d3d3;
+      margin-top: 10px;
+      height: auto;
+      max-height: 300px;
+      overflow-x: hidden;
+      overflow-y: auto
+      }
+      #menu ul li #openMenu li div.file {
+      position: relative
+      }
+      #menu ul li ul #filesList div.file a {
+      padding: 6px 10px
+      }
+      #menu ul li ul #filesList div.file a:hover {
+      color: #ee422e;
+      text-decoration: underline
+      }
+      #menu ul li ul #filesList div.file:first-child a {
+      padding-top: 16px
+      }
+      #menu ul li ul #filesList div.file:last-child a {
+      padding-bottom: 16px
+      }
+      #menu ul li ul #filesList div.file a.open {
+      margin-right: 30px
+      }
+      #menu ul li ul #filesList div.file a.remove {
+      display: none;
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 30px;
+      width: 10px;
+      padding: 0 10px;
+      line-height: 24px;
+      font-size: 18px;
+      font-weight: 700;
+      text-decoration: none
+      }
+      #menu ul li #openMenu li div.file:hover a.remove {
+      display: block
+      }
+      #menu ul li ul #filesList div.file:first-child a.remove {
+      padding-top: 10px
+      }
+      span.dropDownIcon {
+      font-size: 75%;
+      margin-left: 2px
+      }
+      #menu #open {
+      cursor: default
+      }
+      #menu ul li.settings ul#settingsMenu {
+      left: auto;
+      right: 0
+      }
+      #menu ul li.settings ul#settingsMenu li {
+      height: auto
+      }
+      #menu ul li.settings ul#settingsMenu li:hover {
+      background-color: inherit
+      }
+      #menu ul li.settings ul#settingsMenu li div {
+      padding: 6px 10px;
+      position: relative
+      }
+      #menu ul li.settings ul#settingsMenu li#schemasList {
+      border-top: 1px solid #d3d3d3;
+      margin-top: 10px;
+      padding: 6px 0;
+      height: auto;
+      max-height: 300px;
+      overflow-x: hidden;
+      overflow-y: auto
+      }
+      #schemasList label:hover {
+      color: #ee422e
+      }
+      #menu ul li.settings ul#settingsMenu li div.indentation {
+      line-height: 24px
+      }
+      #menu ul li.settings ul#settingsMenu li div a.remove {
+      display: none;
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 30px;
+      width: 10px;
+      padding: 0 10px;
+      line-height: 30px;
+      font-size: 18px;
+      font-weight: 700;
+      text-decoration: none
+      }
+      #menu ul li.settings ul#settingsMenu li div:hover a.remove {
+      display: block
+      }
+      #menu ul li.settings ul#settingsMenu li div a.remove:hover {
+      color: #ee422e
+      }
+      .badge {
+      padding: 0.09em 0.4em !important
+      }
+      .progress {
+      display: block;
+      text-align: center;
+      width: 0;
+      height: 3px;
+      background: red;
+      transition: width .3s;
+      }
+      .progress.hide {
+      opacity: 0;
+      transition: opacity 1.3s;
+      }
+      .grecaptcha-badge { 
+      visibility: hidden;
+      }
+      .container-scroll {
+      overflow-x: auto;
+      }
+      .container-scroll > .row {
+      width: 150vw; /* = 100% * 4/3 */
+      }
+      .container-scroll .col-md-6 {
+      max-width: 50vw; !important
+      }       
+   </style>
+   <script>
+      function btnclick(){
+        $('#box1').animate({
+          width: 'toggle'
+        }, 2000);
+        $('#box3').animate({
+          width: 'toggle'
+        }, 2000);
+      }
+   </script>
+   <style>
+      .box {  height: 300px;  border: black;  border-style: dotted;}
+   </style>
+   <body >
+   <div id="header" class="container-fluid">
+      <div class="row">
+         <div class="col-md-5">
+            <a href="https://jsondoc.onine/index.html" class="header">
+            <img alt="JSON online documentation" title="Json doc" src="./logo.svg" id="logo"> <strong style="color:white">
+            JSON Documentation</strong>
+            </a>
+            <span id="name" title="Document name"></span>
+            <img id="progressSpinner" src="./Spinner.gif" style="height: 44px; display:none;">
+         </div>
+         <div class="col-md-2 text-center" style="
+            background: #ffffff;
+            "><button id="SwitchToDocMode"  type="button" class="btn btn-primary " onclick="SwitchToDocMode()" style="margin-top: 3px;">Documention Mode&nbsp;<i class="fa fa-chevron-right" aria-hidden="true"></i></button>
+            <button id= "SwitchToEditMode" type="button" class="btn btn-primary " onclick="SwitchToDocMode()" style="margin-top: 3px;display:none;"><i class="fa fa-chevron-left" aria-hidden="true"></i>&nbsp;Edit Json </button>
+         </div>
+         <div class="col-md-5">
+            <div id="menu" style="">
+               <ul>
+                  <li>        
+                     <a id="saveOnline" title="Save and share online">Save</a>        
+                  </li>
+                  <li>        
+                     <a id="newWindow" href="https://jsondoc.online/index.html" target="_blank" title="Save and share online">New</a>        
+                  </li>
+                  <li>
+                     <a id="help" title="Online Json documentation help video" href="#helpGIF" rel="modal:open">Help</a>
+                  </li>
+				  <li>
+                     <a id="GithubLink" title="Online Json documentation Tool Github link" href="https://github.com/bhuvangu/jsondoc.online" ><img src="./GitHub-Mark-Light-32px.png" style="height: 24px;"></a>
+                  </li>
+               </ul>
+               <span style="font-size: 10px;color: grey;max-width: 220px;float: right;">site is protected by reCAPTCHA and the Google<a style="display:inline-block; "href="https://policies.google.com/privacy">Privacy Policy</a><span>and</span><a style="display:inline-block; href="https://policies.google.com/terms">Terms of Service</a> apply
+               </span>
+            </div>
+         </div>
+         <div id="recaptcha" class="g-recaptcha" data-sitekey="6LesOKcUAAAAAOXiHaHF8xsnSsZzmbdL-XlNG1Nk" data-callback="getpolicyNUpload" data-size="invisible"></div>
+      </div>
+   </div>
+   <script>
+      function getXHR() {
+          var xhr = new window.XMLHttpRequest();
+          xhr.addEventListener("progress", updateProgress);
+          xhr.addEventListener("load", transferComplete);
+          xhr.addEventListener("error", transferFailed);
+          xhr.addEventListener("abort", transferCanceled);
+          function updateProgress(){            
+              $("#progressSpinner").show();
+          }
+          function transferComplete(){
+              $("#progressSpinner").hide(); 
+          }
+          function transferFailed(){
+              $("#progressSpinner").hide();
+          }
+          function transferCanceled(){
+              $("#progressSpinner").hide();
+          }
+          return xhr;
+      }
+          $("#saveOnline").on("click", function(){
+              $("#progressSpinner").show();
+              grecaptcha.execute();
+              
+          })
+      
+          function getpolicyNUpload(recaptchaToken){
+              var qp = "recaptcha="+recaptchaToken;
+              
+              if($.urlParam("id")) {
+                  qp = qp+'&'+ "docId="+ $.urlParam("id");
+      
+              }else{
+                  docName = prompt("Please enter doc Name", "");  
+                  qp = qp+'&'+ "docName="+ docName;
+              }
+      
+              if(docVersion) {
+               qp = qp+'&'+ "upgradingFromDocVersion="+ docVersion;   
+              }
+      
+              $.ajax({
+                  xhr: getXHR,
+                  url: "https://asia-east2-jsondoc.cloudfunctions.net/sign-url?"+qp, 
+                  success: function(result) {
+                              setTimeout(uploadToGStorage(result), 1);
+                          }
+              });               
+          }
+          function uploadToGStorage(policy){
+              var json = editor.getValue();
+              var jsonDoc = editorDoc.getValue();
+              var gDocTostore = {}
+              gDocTostore.json = json;
+              gDocTostore.jsonDoc = jsonDoc;
+              if(docVersion == null){
+                  gDocTostore.docVersion = 1;
+              }else{
+                  gDocTostore.docVersion = docVersion+1;
+              }
+              gDocTostore.docName = docName;
+              var gDocTostoreString = JSON.stringify(gDocTostore);
+              post("https://storage.googleapis.com/jsondoc.online", {
+              "key":policy.fileName,  
+              "cache-control": "no-cache",
+              "GoogleAccessId":"cloud-function@jsondoc.iam.gserviceaccount.com",
+              "acl":"public-read",
+              "policy":policy.base64,
+              "signature":policy.signature,
+              "file": new File([gDocTostoreString], policy.fileName,{type : 'application/json'})
+              }, function(response) {
+                  window.location.replace("https://jsondoc.online/index.html?id="+policy.fileName);
+              })
+          }
+   </script>
+   <script>
+      var Tokenizer = function(rules) {
+      this.states = rules;
+      
+      this.regExps = {};
+      this.matchMappings = {};
+      for (var key in this.states) {
+        var state = this.states[key];
+        var ruleRegExps = [];
+        var matchTotal = 0;
+        var mapping = this.matchMappings[key] = {defaultToken: "text"};
+        var flag = "g";
+      
+        var splitterRurles = [];
+        for (var i = 0; i < state.length; i++) {
+            var rule = state[i];
+            if (rule.defaultToken)
+                mapping.defaultToken = rule.defaultToken;
+            if (rule.caseInsensitive)
+                flag = "gi";
+            if (rule.regex == null)
+                continue;
+      
+            if (rule.regex instanceof RegExp)
+                rule.regex = rule.regex.toString().slice(1, -1);
+      
+            // Count number of matching groups. 2 extra groups from the full match
+            // And the catch-all on the end (used to force a match);
+            var adjustedregex = rule.regex;
+            var matchcount = new RegExp("(?:(" + adjustedregex + ")|(.))").exec("a").length - 2;
+            if (Array.isArray(rule.token)) {
+                if (rule.token.length == 1 || matchcount == 1) {
+                    rule.token = rule.token[0];
+                } else if (matchcount - 1 != rule.token.length) {
+                    this.reportError("number of classes and regexp groups doesn't match", { 
+                        rule: rule,
+                        groupCount: matchcount - 1
+                    });
+                    rule.token = rule.token[0];
+                } else {
+                    rule.tokenArray = rule.token;
+                    rule.token = null;
+                    rule.onMatch = this.$arrayTokens;
+                }
+            } else if (typeof rule.token == "function" && !rule.onMatch) {
+                if (matchcount > 1)
+                    rule.onMatch = this.$applyToken;
+                else
+                    rule.onMatch = rule.token;
+            }
+      
+            if (matchcount > 1) {
+                if (/\\\d/.test(rule.regex)) {
+                    // Replace any backreferences and offset appropriately.
+                    adjustedregex = rule.regex.replace(/\\([0-9]+)/g, function(match, digit) {
+                        return "\\" + (parseInt(digit, 10) + matchTotal + 1);
+                    });
+                } else {
+                    matchcount = 1;
+                    adjustedregex = this.removeCapturingGroups(rule.regex);
+                }
+                if (!rule.splitRegex && typeof rule.token != "string")
+                    splitterRurles.push(rule); // flag will be known only at the very end
+            }
+      
+            mapping[matchTotal] = i;
+            matchTotal += matchcount;
+      
+            ruleRegExps.push(adjustedregex);
+      
+            // makes property access faster
+            if (!rule.onMatch)
+                rule.onMatch = null;
+        }
+        
+        if (!ruleRegExps.length) {
+            mapping[0] = 0;
+            ruleRegExps.push("$");
+        }
+        
+        splitterRurles.forEach(function(rule) {
+            rule.splitRegex = this.createSplitterRegexp(rule.regex, flag);
+        }, this);
+      
+        this.regExps[key] = new RegExp("(" + ruleRegExps.join(")|(") + ")|($)", flag);
+      }
+      };
+      var MAX_TOKEN_COUNT = 200000;
+      (function() {
+      this.$setMaxTokenCount = function(m) {
+        MAX_TOKEN_COUNT = m | 0;
+      };
+      
+      this.$applyToken = function(str) {
+        var values = this.splitRegex.exec(str).slice(1);
+        var types = this.token.apply(this, values);
+      
+        // required for compatibility with old modes
+        if (typeof types === "string")
+            return [{type: types, value: str}];
+      
+        var tokens = [];
+        for (var i = 0, l = types.length; i < l; i++) {
+            if (values[i])
+                tokens[tokens.length] = {
+                    type: types[i],
+                    value: values[i]
+                };
+        }
+        return tokens;
+      };
+      
+      this.$arrayTokens = function(str) {
+        if (!str)
+            return [];
+        var values = this.splitRegex.exec(str);
+        if (!values)
+            return "text";
+        var tokens = [];
+        var types = this.tokenArray;
+        for (var i = 0, l = types.length; i < l; i++) {
+            if (values[i + 1])
+                tokens[tokens.length] = {
+                    type: types[i],
+                    value: values[i + 1]
+                };
+        }
+        return tokens;
+      };
+      
+      this.removeCapturingGroups = function tokenizerDOTremoveCapturingGroupsX(src) {
+        var r = src.replace(
+            /\\.|\[(?:\\.|[^\\\]])*|\(\?[:=!]|(\()/g,
+            function(x, y) {return y ? "(?:" : x;}
+        );
+        return r;
+      };
+      
+      this.createSplitterRegexp = function(src, flag) {
+        if (src.indexOf("(?=") != -1) {
+            var stack = 0;
+            var inChClass = false;
+            var lastCapture = {};
+            src.replace(/(\\.)|(\((?:\?[=!])?)|(\))|([\[\]])/g, function(
+                m, esc, parenOpen, parenClose, square, index
+            ) {
+                if (inChClass) {
+                    inChClass = square != "]";
+                } else if (square) {
+                    inChClass = true;
+                } else if (parenClose) {
+                    if (stack == lastCapture.stack) {
+                        lastCapture.end = index+1;
+                        lastCapture.stack = -1;
+                    }
+                    stack--;
+                } else if (parenOpen) {
+                    stack++;
+                    if (parenOpen.length != 1) {
+                        lastCapture.stack = stack;
+                        lastCapture.start = index;
+                    }
+                }
+                return m;
+            });
+      
+            if (lastCapture.end != null && /^\)*$/.test(src.substr(lastCapture.end)))
+                src = src.substring(0, lastCapture.start) + src.substr(lastCapture.end);
+        }
+        
+        // this is needed for regexps that can match in multiple ways
+        if (src.charAt(0) != "^") src = "^" + src;
+        if (src.charAt(src.length - 1) != "$") src += "$";
+        
+        return new RegExp(src, (flag||"").replace("g", ""));
+      };
+      
+      /**
+      * Returns an object containing two properties: `tokens`, which contains all the tokens; and `state`, the current state.
+      * @returns {Object}
+      **/
+      this.getLineTokens = function(line, startState) {
+        if (startState && typeof startState != "string") {
+            var stack = startState.slice(0);
+            startState = stack[0];
+            if (startState === "#tmp") {
+                stack.shift();
+                startState = stack.shift();
+            }
+        } else
+            var stack = [];
+      
+        var currentState = startState || "start";
+        var state = this.states[currentState];
+        if (!state) {
+            currentState = "start";
+            state = this.states[currentState];
+        }
+        var mapping = this.matchMappings[currentState];
+        var re = this.regExps[currentState];
+        re.lastIndex = 0;
+      
+        var match, tokens = [];
+        var lastIndex = 0;
+        var matchAttempts = 0;
+      
+        var token = {type: null, value: ""};
+      
+        while (match = re.exec(line)) {
+            var type = mapping.defaultToken;
+            var rule = null;
+            var value = match[0];
+            var index = re.lastIndex;
+      
+            if (index - value.length > lastIndex) {
+                var skipped = line.substring(lastIndex, index - value.length);
+                if (token.type == type) {
+                    token.value += skipped;
+                } else {
+                    if (token.type)
+                        tokens.push(token);
+                    token = {type: type, value: skipped};
+                }
+            }
+      
+            for (var i = 0; i < match.length-2; i++) {
+                if (match[i + 1] === undefined)
+                    continue;
+      
+                rule = state[mapping[i]];
+      
+                if (rule.onMatch)
+                    type = rule.onMatch(value, currentState, stack, line);
+                else
+                    type = rule.token;
+      
+                if (rule.next) {
+                    if (typeof rule.next == "string") {
+                        currentState = rule.next;
+                    } else {
+                        currentState = rule.next(currentState, stack);
+                    }
+                    
+                    state = this.states[currentState];
+                    if (!state) {
+                        this.reportError("state doesn't exist", currentState);
+                        currentState = "start";
+                        state = this.states[currentState];
+                    }
+                    mapping = this.matchMappings[currentState];
+                    lastIndex = index;
+                    re = this.regExps[currentState];
+                    re.lastIndex = index;
+                }
+                if (rule.consumeLineEnd)
+                    lastIndex = index;
+                break;
+            }
+      
+            if (value) {
+                if (typeof type === "string") {
+                    if ((!rule || rule.merge !== false) && token.type === type) {
+                        token.value += value;
+                    } else {
+                        if (token.type)
+                            tokens.push(token);
+                        token = {type: type, value: value};
+                    }
+                } else if (type) {
+                    if (token.type)
+                        tokens.push(token);
+                    token = {type: null, value: ""};
+                    for (var i = 0; i < type.length; i++)
+                        tokens.push(type[i]);
+                }
+            }
+      
+            if (lastIndex == line.length)
+                break;
+      
+            lastIndex = index;
+      
+            if (matchAttempts++ > MAX_TOKEN_COUNT) {
+                if (matchAttempts > 2 * line.length) {
+                    this.reportError("infinite loop with in ace tokenizer", {
+                        startState: startState,
+                        line: line
+                    });
+                }
+                // chrome doens't show contents of text nodes with very long text
+                while (lastIndex < line.length) {
+                    if (token.type)
+                        tokens.push(token);
+                    token = {
+                        value: line.substring(lastIndex, lastIndex += 2000),
+                        type: "overflow"
+                    };
+                }
+                currentState = "start";
+                stack = [];
+                break;
+            }
+        }
+      
+        if (token.type)
+            tokens.push(token);
+        
+        if (stack.length > 1) {
+            if (stack[0] !== currentState)
+                stack.unshift("#tmp", currentState);
+        }
+        return {
+            tokens : tokens,
+            state : stack.length ? stack : currentState
+        };
+      };
+       
+      
+      }).call(Tokenizer.prototype);
+      
+      
+      var rules = {
+        "start" : [
+            {
+                token : "variable", // single line
+                regex : '["](?:(?:\\\\.)|(?:[^"\\\\]))*?["]\\s*(?=:)'
+            }, {
+                token : "comma", // single line
+                regex : ',',                
+            }, {
+                token : "null", // single line
+                regex : 'null',                
+            }, {
+                token : "string", // single line
+                regex : '"',
+                next  : "string"
+            }, {
+                token : "constant_numeric", // hex
+                regex : "0[xX][0-9a-fA-F]+\\b"
+            }, {
+                token : "constant_numeric", // float
+                regex : "[+-]?\\d+(?:(?:\\.\\d*)?(?:[eE][+-]?\\d+)?)?\\b"
+            }, {
+                token : "constant_language_boolean",
+                regex : "(?:true|false)\\b"
+            }, {
+                token : "text", // single quoted strings are not allowed
+                regex : "['](?:(?:\\\\.)|(?:[^'\\\\]))*?[']"
+            }, {
+                token : "comment", // comments are not allowed, but who cares?
+                regex : "\\/\\/.*$"
+            }, {
+                token : "comment_start", // comments are not allowed, but who cares?
+                regex : "\\/\\*",
+                next  : "comment"
+            }, {
+                token : "paren_lparen",
+                regex : "[[({]"
+            }, {
+                token : "paren_rparen",
+                regex : "[\\])}]"
+            }, {
+                token : "text",
+                regex : "\\s+"
+            }
+        ],
+        "string" : [
+            {
+                token : "constant.language.escape",
+                regex : /\\(?:x[0-9a-fA-F]{2}|u[0-9a-fA-F]{4}|["\\\/bfnrt])/
+            }, {
+                token : "string",
+                regex : '"|$',
+                next  : "start"
+            }, {
+                defaultToken : "string"
+            }
+        ],
+        "comment" : [
+            {
+                token : "comment.end", // comments are not allowed, but who cares?
+                regex : "\\*\\/",
+                next  : "start"
+            }, {
+                defaultToken: "comment"
+            }
+        ]
+      };
+      
+      var tokenizer = new Tokenizer(rules);
+   </script>
+   <style >
+      .debugOff{
+      display:none;
+      }
+          .container-scroll {
+            overflow-x: auto;
+          }
+          .x3row {
+            width: 150.1vw; /* = 100% * 4/3 */
+          }
+          .col-md-5vw{
+            max-width: 50vw; !important
+          } 
+   </style>
+   <div data-simplebar class="container-fluid container-scroll">
+      <style>
+         .json-editors{
+         box-shadow: 0 0 4px 2px rgba(0,0,0,.1);
+         }
+         #ace_editor{
+         min-height:calc(100vh - 76px);
+         }
+         #ace_editor1{
+         min-height:100px;
+         display:none;
+         }
+         .jsoneditorheader{
+         height: 30px;
+         width:100%;
+         background: #f4a460!important;
+         border-color: #f4a460!important;
+         }
+         .jsonviewercontainer{        
+         height:calc(100vh - 76px);
+         box-shadow: 0 0 4px 2px rgba(0,0,0,.1);
+         }
+         .jsonviewerheader{
+         height: 30px;
+         width:100%;
+         background: #f4a460!important;
+         border-color: #f4a460!important;
+         }
+         .docviewcontainer{        
+         height:calc(100vh - 76px);
+         box-shadow: 0 0 4px 2px rgba(0,0,0,.1);
+         }
+         .docviewerheader{
+         height: 30px;
+         width:100%;
+         background: #f4a460!important;
+         border-color: #f4a460!important;
+         }
+         #json-editors-section {
+         margin-top:2px;
+         }
+         #doc-view-section{
+         margin-top:2px;
+         }
+         #json-viewer-section{
+         margin-top:2px;
+         }
+      </style>
+      <div class="row x3row ">
+         <div id="json-editors-section" class="col-md-6 col-md-5vw">
+            <div class="json-editors">
+               <div class="jsoneditorheader">
+                  <a id="formatJsonBtn" href="" class="fa fa-align-left" aria-hidden="true" style="margin-top: 7px;margin-left: 7px;color:white;
+                     "></a>
+                  <span style="float:right;margin-top: 5px;margin-right: 7px;color:grey;"> Json Editor</span>
+               </div>
+               <div id="ace_editor">{  
+                  "employee": {  
+                  "name":       "sonoo",   
+                  "salary":      56000,   
+                  "married":    true  
+                  }  
+                  }  
+               </div>
+               <div id="ace_editor1"></div>
+            </div>
+         </div>
+         <div id="json-viewer-section" class="col-md-6 col-md-5vw">
+            <div class="jsonviewercontainer">
+               <div class="jsonviewerheader">
+                  <a id="expandAllBtn" href="" class="fa fa-expand" aria-hidden="true" title="expand all" style="margin-top: 7px;margin-left: 7px;color:white;
+                     "></a>
+                  <a id="collapeAllBtn" href="" class="fa fa-compress" title="collape all" aria-hidden="true" style="margin-top: 7px;margin-left: 7px;color:white;
+                     "></a>
+                  <span style="float:right;margin-top: 5px;margin-right: 7px;color:grey;"> Json Viewer</span>
+               </div>
+               <div id ="jsonviewer" class="json-editor-blackbord " style="height:calc(100vh - 76px);overflow: scroll">   
+               </div>
+            </div>
+         </div>
+         <div  id="doc-view-section" class="col-md-6 col-md-5vw" style="">
+            <div class="docviewcontainer">
+               <div class="docviewerheader">
+                  <span style="float:right;margin-top: 5px;margin-right: 7px;color:grey;"> Documention viewer</span>
+               </div>
+               <div  id="docview" style="height:calc(100vh - 76px);overflow: scroll;">         
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <!-- Optional JavaScript -->
+   <!-- jQuery first, then Popper.js, then Bootstrap JS -->        
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+   <script>
+      function isCollapsable(arg) {
+      return arg instanceof Object && Object.keys(arg).length > 0;
+      }
+      
+      /**
+      * Check if a string represents a valid url
+      * @return boolean
+      */
+      function isUrl(string) {
+       var regexp = /^(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+       return regexp.test(string);
+      }
+      
+      function collapeExpandALL(showAll){
+		var arrows = $("#jsonviewer a.json-toggle");
+		arrows = arrows.slice(1);
+		var target =  arrows.siblings('ul.json-dict, ol.json-array');
+		
+		if(showAll){
+			target.show();
+			arrows.removeClass('collapsed');
+		}else{
+			target.hide();
+			arrows.addClass('collapsed');
+		}
+		toggleSubElementCount();
+        function toggleSubElementCount(){
+			target.each(function(index,element) {			
+			x = $(element);
+			if (x.is(':visible')) {
+                x.siblings('.json-placeholder').remove();
+            }else {
+				var count = x.children('li').length;
+                var placeholder = count + (count > 1 ? ' items' : ' item');
+                x.after('<a href class="json-placeholder">' + placeholder + '</a>');
+            }
+			});
+        }
+      }
+      
+      function enableJsonFn() {
+      $("#formatJsonBtn").on('click', function(){
+          formatJson();        
+          return false;
+      })
+      $("#expandAllBtn").on('click', function(){
+          collapeExpandALL(true);return false;
+      })
+      $("#collapeAllBtn").on('click', function(){
+          collapeExpandALL(false);return false;
+      })
+      
+      }
+      
+      enableJsonFn();
+      function enableClicking(elemId) {
+      $(elemId).off('click');
+        $(elemId).on('click', 'a.json-toggle', function() {
+          var target = $(this).toggleClass('collapsed').siblings('ul.json-dict, ol.json-array');
+          target.slideToggle(toggleSubElementCount);
+          function toggleSubElementCount(){
+              if (target.is(':visible')) {
+                target.siblings('.json-placeholder').remove();
+              }
+              else {
+                var count = target.children('li').length;
+                var placeholder = count + (count > 1 ? ' items' : ' item');
+                target.after('<a href class="json-placeholder">' + placeholder + '</a>');
+              }
+          }
+          return false;
+        });
+      }
+   </script>
+   <script>
+      var typeToClassMap = {
+        "variable":"json-property",
+        "string":"json-string",
+        "constant_numeric":"json-literal",
+        "constant_language_boolean": "json-literal",
+        "text":"json-string",
+        "paren_lparen" : ""
+      }
+      
+      //html = json2htmlAce()
+          
+      enableClicking("#jsonviewer");
+      enableElementBoxShadeOnHover("#jsonviewer");
+      collapeExpandALL(false);
+      function Node(){
+        this.childs = []
+        this.parent = null;
+        this.startLine = "";
+        this.startLineIndex=0;
+        this.endLine = "";      
+        this.endLineIndex =0;
+      }
+      function json2htmlAce(jsonString) {
+        //var jsonObj = JSON.parse(jsonString);
+        //jsonString = JSON.stringify(jsonObj, null, 4);
+        var jsonTree = json2NodeTree(jsonString);
+        var html  = printNodeStruct3(jsonTree);
+      
+        return html;
+      }
+      
+      var moveOverChangeElement;
+      function enableElementBoxShadeOnHover(elemId){
+          $(elemId).on("mouseover", "li",function(e){
+      
+          try{moveOverChangeElement.css('box-shadow',"none");}catch(e){}
+          console.log(this);$(this).css('box-shadow',"0px 0px 1px #88888870"); e.stopPropagation();
+          moveOverChangeElement = $(this);
+           })
+      }
+      
+      function json2NodeTree(jsonString) {
+        var jsonLines = jsonString.split("\n");
+        var root = new Node();
+        var parent  = root;
+        for (var i = 0;  i<jsonLines.length; i++) {
+         var lineString =  jsonLines[i];
+         if(lineString.indexOf("{") != -1
+              && lineString.indexOf("}") != -1){
+            parent.childs.push({val:lineString, index:i});
+         }else if(lineString.indexOf("[") != -1
+              && lineString.indexOf("]") != -1){
+            parent.childs.push({val:lineString, index:i});
+         }else if(lineString.indexOf("{") != -1 || lineString.indexOf("[") != -1) {
+            var child = new Node();
+            child.parent = parent;          
+            parent.childs.push(child); 
+            child.startLine = lineString;
+            child.startLineIndex = i;
+            parent = child;
+          }else if(lineString.indexOf("}") != -1 || lineString.indexOf("]") != -1) {
+            parent.endLine  = lineString;
+            parent.endLineIndex = i;
+            parent = parent.parent;
+          }else{// text
+            parent.childs.push({val:lineString, index:i});          
+          }
+        }      
+        return root;
+      }
+      
+      
+      console.log(typeToClassMap)
+      
+      function generateJsonLineHTML(line){
+        if(line.indexOf("/*$docx_") != -1){
+          line = line.substring(0, line.indexOf("/*$docx_"));
+        }
+        //return line;
+        var html =""
+        var tokensDetail = tokenizer.getLineTokens(line);
+        //debugger
+        for (var i = 0; i < tokensDetail.tokens.length; i++) {        
+          var token = tokensDetail.tokens[i];
+          var tokenValue = token.value;
+          tokenValue = removeTrailingCommaNQoute(tokenValue);
+          html += '<span class=' + typeToClassMap[token.type] + '>' +tokenValue+'</span>'
+        }
+        
+        return html;
+      }
+      
+      function removeTrailingCommaNQoute(value) {
+          if(!value) return value;
+          value = value.trim();
+          if(value.charAt(0) == '"'){
+              value = value.substring(1, value.length);
+          }
+          if(value.charAt(value.length-1) == '"'){
+              value = value.substring(0, value.length-1);
+          }
+          if(value.charAt(value.length-1) == ','){
+              value = value.substring(0, value.length-1);
+          }
+          return value;
+      }
+      
+      function extractDOCXId(line) {
+          var docId =  line.match(/docx_([0-9]*)/)[1];
+          return docId;
+      }
+      function scrollDocview(docId) {
+        console.log(docId);
+        var elTop = $('#docview_'+docId)[0].getBoundingClientRect().top 
+        console.log("cursor:"+cursorY +" elTOP:"+elTop+ "  scroll by "+ (elTop- cursorY));
+        $("#docview")[0].scrollBy({top: elTop- cursorY ,left: 0,behavior: 'smooth'});
+        $('#docview_'+docId).effect("highlight", {}, 3000);
+      }
+      
+      function getDOCHTML(index, lineString) {
+        //lineString +=lineString+"//$docx_12";
+        if(lineString.indexOf('/*$docx_') != -1) {        
+          var docId = extractDOCXId(lineString);
+          var docJsonIndex = findDocJsonIndex(docId);      
+        }      
+        if(docJsonIndex != null){
+            return '<a href="javascript:void(0);" id="eye_'+docId+'" onClick="scrollDocview('+docId+');" style="float: right;"  class="badge badge-secondary">'+docJsonIndex+'</a>';  
+        }else{
+            return '<a href="javascript:void(0);" onclick="handlePlusSignClick('+index+')" style="float: right;" class=""><i class="fa fa-pencil" aria-hidden="true"></i></a>';  
+        }            
+      }
+      
+      function handlePlusSignClick(index) {
+        var lines = editor.getValue().split("\n");
+        var ts = (new Date()).getTime();
+        var originalLine  = lines[index]
+        lines[index] = lines[index] + "/*$docx_"+ ts+"*/";
+        var newContent = ""
+        for (var i = 0; i < lines.length; i++) {
+          newContent = newContent + lines[i] + "\n"
+        }
+        editor.setValue(newContent.trim())
+        /// add to documentation json editor
+        var docJsonString  = editorDoc.getValue();
+        if(!docJsonString) docJsonString = "[]";
+        var jsonDocArr  = JSON.parse(docJsonString);
+        jsonDocArr.push({id:ts, value:originalLine})
+        editorDoc.setValue(JSON.stringify(jsonDocArr, null, 2));
+        
+        rearrangeDocJson();
+        ///rerender tree view again
+        pullToTreeView();
+        // rerender doc view
+        buildDocView();
+      
+      }
+      function rearrangeDocJson(){
+          var lines = editor.getValue().split("\n");        
+          var docIdSeq = []
+          for (var i = 0; i < lines.length; i++) {
+            var tokenObj = tokenizer.getLineTokens(lines[i]);
+            var tokens = tokenObj.tokens;
+            for (var j = 0; j < tokens.length; j++) {
+              if(tokens[j].type == 'comment'){
+                var docId = extractDOCXId(tokens[j].value);
+                docIdSeq.push(docId);
+              }
+            }
+          }
+          var arrangedDocJson = []
+          for (var i = 0; i < docIdSeq.length; i++) {
+            var docJsonElement= findInDocJson(docIdSeq[i]);
+            if(docJsonElement){
+              arrangedDocJson.push(docJsonElement);
+            }
+          }
+      
+         var docJsonString =  JSON.stringify(arrangedDocJson, null, 2);
+         editorDoc.setValue(docJsonString);
+      
+      }
+      
+      function findInDocJson(docId) {
+        var docJsonString = editorDoc.getValue();
+        if(!docJsonString) docJsonString="[]";
+        var docJson = JSON.parse(docJsonString);
+        for (var i = 0; i < docJson.length; i++) {
+          if(docId == docJson[i].id){
+            return docJson[i];
+          }
+        }
+      }
+      
+      function findDocJsonIndex(docId) {
+        var docJsonString = editorDoc.getValue();
+        if(!docJsonString) docJsonString="[]";
+        var docJson = JSON.parse(docJsonString);
+        for (var i = 0; i < docJson.length; i++) {
+          if(docId == docJson[i].id){
+            return i;
+          }
+        }
+        return null;
+      }
+      
+      function printNodeStruct3(node) {      
+        //result = '<a class="json-toggle"></a>'+node.startLine.trim();
+        result = '<ul class="json-dict">'
+        for (var i = 0; i < node.childs.length; i++) {
+            if("string" == typeof node.childs[i].val)
+              result += '<li>'+getDOCHTML(node.childs[i].index, node.childs[i].val)+generateJsonLineHTML(node.childs[i].val.trim())+"</li>";
+            else{
+              result +=  '<li><a class="json-toggle"></a>'
+                              +getDOCHTML(node.childs[i].startLineIndex,node.childs[i].startLine.trim())+generateJsonLineHTML(node.childs[i].startLine.trim());
+              result += printNodeStruct3(node.childs[i]);
+              result += node.childs[i].endLine + '</li>';
+            }
+        }      
+        result +='</ul>';      
+        return result;
+      }
+      
+      
+      function containsOpenBracket(tokensDetail) {
+      var ans = false;
+      tokensDetail.tokens.forEach(function(token) {
+        if(token.value.trim() == "{"){ans=true}
+        })
+      return ans;
+      }
+   </script>
+   <style>
+      /*li:hover {
+      box-shadow: 0px 0px 1px #88888870;
+      }*/
+      [contenteditable]:read-write:focus {
+      outline: none; 
+      }
+      .docviewelement {
+      box-shadow: 0 0 1px 0px rgba(0,0,0,.5);
+      margin: 8px 4px 4px 4px;
+      }
+   </style>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.3/ace.js" type="text/javascript" charset="utf-8"></script>
+   <script>
+      $.urlParam = function (name) {
+          var results = new RegExp('[\?&]' + name + '=([^&#]*)')
+                            .exec(window.location.search);
+      
+          return (results !== null) ? results[1] || 0 : false;
+      }
+   </script>
+   <script>
+      var editor = ace.edit("ace_editor");
+      editor.setTheme("ace/theme/XCode");
+      editor.session.setMode("ace/mode/json");  
+      
+      var editorDoc = ace.edit("ace_editor1");
+      editorDoc.setTheme("ace/theme/XCode");
+      editorDoc.session.setMode("ace/mode/json");  
+      
+      loadFromStorage()
+      var docVersion = null;
+      var docName = null;            
+      function loadFromStorage() {
+          // first check if queryparam present
+          var docLoc = $.urlParam("id");
+      
+         $.ajax({
+              xhr: getXHR,
+              url:"https://storage.googleapis.com/jsondoc.online/" + docLoc,
+              success: function( data ) {
+                        editor.setValue(data.json);
+                        editorDoc.setValue(data.jsonDoc);
+                        docVersion = data.docversion;
+                        docName = data.docName;
+                        showDocName();
+                    }
+          });        
+          // try from session storage
+      }
+      function showDocName(){
+          $("#name").text(docName);
+          $("#name").show();
+      }
+      function SwitchToDocMode() {
+        rearrangeDocJson(); // reaggange the doc json and also delete element which are not present in master json     
+        formatJson();
+        pullToTreeView();
+        buildDocView();             
+        toggleEditDOCJsonBtn();
+      }        
+      
+      var scrollstate = "left";
+      function toggleEditDOCJsonBtn(){
+         $("#SwitchToEditMode").toggle();
+         $("#SwitchToDocMode").toggle();
+         if(scrollstate == "left") {
+            $("#doc-view-section")[0].scrollIntoView({behavior: "smooth"})
+            scrollstate = "right"
+          }else {
+            $("#json-editors-section")[0].scrollIntoView({behavior: "smooth"})
+            scrollstate = "left"
+          }
+      }
+     
+      function formatJson() {
+        var jsonString = editor.getValue();
+        var tokensInfo = tokenizer.getLineTokens(jsonString);
+        var tokens = tokensInfo.tokens;
+        var jsonStringNoCommments = "";
+        for (var i = 0; i < tokens.length; i++) {
+          if(tokens[i].type =='comment_start' || tokens[i].type =='comment' || tokens[i].type =='comment.end'){
+            // skip
+          }else{
+            jsonStringNoCommments+=tokens[i].value;
+          }
+        }      
+      
+        try{
+          var jsonObj = JSON.parse(jsonStringNoCommments);
+          
+        }catch(e){
+          alert("error in json correct it first please:)");
+           return;
+        };      
+      
+        var jsonFormated =buildFormatJson(tokens);
+        editor.setValue(jsonFormated);        
+      
+      }
+      
+      /*
+      / new line when:
+      / {} NO COMMENT
+      / { NO COMMENT
+      / } NO COMMENT
+      / 
+      */
+      var NEWLINE = "\n"
+      function buildFormatJson(tokens) {
+        var indent = 0;
+        var formattedJson=""
+        var tokensWithNoTextToken =[];
+        for (var i = 0; i < tokens.length; i++) {
+          if(tokens[i].type!="text") {
+           tokensWithNoTextToken.push(tokens[i])
+          }
+        }
+        tokensWithNoTextToken = saitize(tokensWithNoTextToken);
+        var jsonLines =[]
+        buildFormatJsonLinesRecurs(tokensWithNoTextToken, jsonLines, 0, 0)      
+        for (var i = 0; i < jsonLines.length; i++) {
+          formattedJson += jsonLines[i]+NEWLINE;
+        }
+        return formattedJson;
+      }
+      
+      function saitize(tokensWithNoTextToken) {
+        var result = []
+        for (var i = 0; i < tokensWithNoTextToken.length; i++) {
+          if(tokensWithNoTextToken[i].type == 'paren_lparen' || tokensWithNoTextToken[i].type == 'paren_rparen'){
+            var chars = tokensWithNoTextToken[i].value.split('')
+            for (var j = 0; j < chars.length; j++) {
+              result.push({type:tokensWithNoTextToken[i].type, value : chars[j]})
+            }          
+          }else{
+            result.push(tokensWithNoTextToken[i]);
+          }
+        }
+        return result;
+      }
+      
+      function buildFormatJsonLinesRecurs(tokens, jsonLines , currentIndex, indent){
+        if(currentIndex >= tokens.length){
+          return;
+        }
+        var currentToken = tokens[currentIndex];
+        var nextToken =  currentIndex+1 < tokens.length ? tokens[currentIndex+1] : null;
+        var nextnextToken = currentIndex+2 < tokens.length ? tokens[currentIndex+2] : null;
+      
+        //{}
+        if(currentToken.type =="paren_lparen" && nextToken.type == "paren_rparen"){
+          jsonLines.push(gap(indent) +currentToken.value + nextToken.value);
+          buildFormatJsonLinesRecurs(tokens, jsonLines, currentIndex+2, indent);
+          return;
+        }
+        // {
+        if(currentToken.type =="paren_lparen" && nextToken.type != "paren_rparen"){        
+          jsonLines.push(gap(indent)+currentToken.value);
+          indent+=1
+          buildFormatJsonLinesRecurs(tokens, jsonLines, currentIndex+1, indent);
+          return;
+        }
+      
+        // variable : somevalue
+        if(currentToken.type =="variable" && nextToken && nextToken.type != "paren_lparen") {        
+          jsonLines.push(gap(indent)+currentToken.value+ ": " + nextToken.value );
+          buildFormatJsonLinesRecurs(tokens, jsonLines, currentIndex+2, indent);
+          return;
+        }
+        // variable : {}      
+        if(currentToken.type =="variable" && nextToken && nextToken.type == "paren_lparen"
+                                          && nextnextToken && nextnextToken.type == "paren_rparen") {        
+          jsonLines.push(gap(indent)+currentToken.value+ ": " + nextToken.value + nextnextToken.value);        
+          buildFormatJsonLinesRecurs(tokens, jsonLines, currentIndex+3, indent);
+          return;
+        }
+        // variable : {      
+        if(currentToken.type =="variable" && nextToken && nextToken.type == "paren_lparen") {        
+          jsonLines.push(gap(indent)+currentToken.value+ ": " + nextToken.value);
+          indent+=1;
+          buildFormatJsonLinesRecurs(tokens, jsonLines, currentIndex+2, indent);
+          return;
+        }            
+      
+        // comma
+        if(currentToken.type =="comma") {        
+          // append to last line
+          jsonLines[jsonLines.length -1]+=currentToken.value;
+          buildFormatJsonLinesRecurs(tokens, jsonLines, currentIndex+1, indent);
+          return;
+        }
+      
+        // /* comment*/
+        if(currentToken.type =="comment_start" && nextToken && nextToken.type == "comment") {        
+          // append to last line
+          jsonLines[jsonLines.length -1]+=currentToken.value.trim() + nextToken.value.trim() + nextnextToken.value.trim();
+          buildFormatJsonLinesRecurs(tokens, jsonLines, currentIndex+3, indent);
+          return;
+        }
+        //} or ] with next element
+        if(currentToken.type =="paren_rparen" && nextToken && nextToken.type!="paren_rparen") {        
+          // append to last line
+          indent-=1;
+          jsonLines.push(gap(indent)+currentToken.value.trim());
+          buildFormatJsonLinesRecurs(tokens, jsonLines, currentIndex+1, indent);
+          return;
+        }
+        //} or ]
+        if(currentToken.type =="paren_rparen") {        
+          // append to last line
+          indent-=1;
+          jsonLines.push(gap(indent)+currentToken.value);
+          buildFormatJsonLinesRecurs(tokens, jsonLines, currentIndex+1, indent);
+          return;
+        }
+      
+        // direct array element      
+        jsonLines.push(gap(indent)+currentToken.value);
+        buildFormatJsonLinesRecurs(tokens, jsonLines, currentIndex+1, indent);
+          return;      
+      
+      }
+      function gap(indent){
+        var gapS = ""
+        for (var i = 0; i < indent; i++) {
+          gapS +="  ";
+        }
+        return gapS;
+      }
+      
+      var docJson = {};
+      function pullToTreeView() {
+        var html = json2htmlAce(editor.getValue());
+      //html = '<a href class="json-toggle"></a>' + html;
+        $("#jsonviewer").html(html);
+      
+      }
+      
+      function buildDocView(){
+        var docJsonString  = editorDoc.getValue();
+        if(!docJsonString) docJsonString = "[]";
+        var jsonDocArr  = JSON.parse(docJsonString);
+        // clear old html
+        $("#docview").html("")
+        for (var i = 0; i < jsonDocArr.length; i++) {        
+          jsonDocArr[i].id;
+          jsonDocArr[i].value;
+          var oldHTML = $("#docview").html()
+          //var newHTML =  oldHTML + '<div class="row"><div class="col-md-12"><textarea class="form-control" contentEditable="true" id=docview_'+jsonDocArr[i].id+'></textarea></div></div>'
+          var newHTML =  oldHTML 
+                        + '<div class="row">'
+                          +'<div class="col-md-12">'
+                            +'<div class="docviewelement">'
+                              +'<div style="background: antiquewhite;">'
+                                +'<div class="badge badge-secondary">'+i+'</div>'
+                                +'<a href="javascript:void(0);" onClick=handleDelete('+jsonDocArr[i].id+') style="float:right;padding-right:5px">x</a>'
+                              +'</div>'  
+                              +'<div contenteditable="true" id=docview_'+jsonDocArr[i].id+'>'                            
+                            +'</div>'  
+                            +'</div>'
+                          +'</div>'
+                        +'</div>'
+          $("#docview").html(newHTML);
+          // set editor value
+          $('#docview_' + jsonDocArr[i].id).html(jsonDocArr[i].value);
+          registerChangeEvent(jsonDocArr[i]);              
+        }
+      }
+      
+      function handleDelete(id) {
+        deleteJsonDocElement(id);
+        deleteDocCommentFromJson(id);
+        pullToTreeView();
+        buildDocView();            
+      }    
+      
+      function deleteJsonDocElement(id){
+        var docJsonString  = editorDoc.getValue();
+        var jsonDocArr  = JSON.parse(docJsonString);
+        var newJsonDocArr = [];
+        for (var i = 0; i < jsonDocArr.length; i++) {
+          if (jsonDocArr[i].id != id){
+            newJsonDocArr.push(jsonDocArr[i]);
+          }
+        }
+        editorDoc.setValue(JSON.stringify(newJsonDocArr, null, 2)); 
+      }
+      function deleteDocCommentFromJson(id){
+        var jsonString = editor.getValue();
+        var jsonStringLines = jsonString.split("\n");
+        var newJsonStringLines = ""
+        for (var i = 0; i < jsonStringLines.length; i++) {
+          var line = jsonStringLines[i];
+          if(line.indexOf("/*$docx_"+id) != -1){
+            line = line.substring(0, line.indexOf("/*$docx_"+id));
+          }
+          newJsonStringLines += line +"\n";
+        }
+      
+        editor.setValue(newJsonStringLines);
+      
+      }
+      
+      
+      function registerChangeEvent(jsonDocItem){
+        setTimeout(function(){
+          document.getElementById('docview_' + jsonDocItem.id)
+          .addEventListener("input", function() {          
+            console.log($(this).html())
+            updateDocJson(jsonDocItem.id, $(this).html());
+          })
+        }, 100);      
+      }
+      // function registerChangeEvent(jsonDocItem){
+      //   setTimeout(function(){
+      //     document.getElementById('docview_' + jsonDocItem.id)
+      //     .addEventListener("input", function() {          
+      //       console.log($(this).val())
+      //       updateDocJson(jsonDocItem.id, $(this).val());
+      //     })
+      //   }, 100);      
+      // }
+      
+      function updateDocJson(key, html) {
+        var docJsonString  = editorDoc.getValue();
+        var jsonDocArr  = JSON.parse(docJsonString);
+        for (var i = 0; i < jsonDocArr.length; i++) {
+          if (jsonDocArr[i].id == key){
+            jsonDocArr[i].value = html
+          }
+        }
+        editorDoc.setValue(JSON.stringify(jsonDocArr, null, 2));
+      
+      }
+      
+   </script>
+   <script>
+      var cursorX;
+      var cursorY;
+      document.onmousemove = function(e){
+          cursorX = e.pageX;
+          cursorY = e.pageY;
+          //console.log(cursorY)
+      }
+   </script>   
+
+   <div id="helpGIF" class="modal" style="max-width:850px;">
+    <a href="#" rel="modal:close">Close</a>
+    <video src="./helpVideo.webm" controls>
+    </video>
+  </div>
+
+   </body>
+</html>

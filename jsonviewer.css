@@ -1,0 +1,76 @@
+/* Syntax highlighting for JSON objects */
+.json-editor-blackbord {
+  background: #fff;
+  color: #000;
+  font-size: 13px;
+  line-height:14px;
+  font-family: Menlo,Monaco,Consolas,"Courier New",monospace;
+}
+@media screen and (min-width: 1600px) {
+  .json-editor-blackbord {
+    font-size: 13px;
+  }
+}
+
+ul.json-dict, ol.json-array {
+  list-style-type: none;
+  margin: 0 0 0 1px;
+  border-left: 1px dotted #e3dcdc;
+  padding-left: 1.3em;
+}
+.json-string {
+  /*color: #0B7500;*/
+  /*color: #BCCB86;*/
+  color: #0ad161;
+}
+.json-literal {
+  /*color: #1A01CC;*/
+  /*font-weight: bold;*/
+  color: #1A01CC;
+}
+.json-url {
+  color: #1e90ff;
+}
+.json-property {
+  color: #000;
+  /*line-height: 160%;
+  font-weight: 500;*/
+}
+
+/* Toggle button */
+a.json-toggle {
+  position: relative;
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+a.json-toggle:focus {
+  outline: none;
+}
+a.json-toggle:before {
+  color: #000;
+  content: "\25BC"; /* down arrow */
+  position: absolute;
+  display: inline-block;
+  width: 1em;
+  left: -1em;
+}
+a.json-toggle.collapsed:before {
+  transform: rotate(-90deg); /* Use rotated down arrow, prevents right arrow appearing smaller than down arrow in some browsers */
+  -ms-transform: rotate(-90deg);
+  -webkit-transform: rotate(-90deg);
+    /*transition: transform 1s linear;*/
+    transform-origin: 28% 50%;
+}
+
+
+/* Collapsable placeholder links */
+a.json-placeholder {
+  color: #aaa;
+  padding: 0 1em;
+  text-decoration: none;
+  cursor: pointer;
+}
+a.json-placeholder:hover {
+  text-decoration: underline;
+}
