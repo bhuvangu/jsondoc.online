@@ -20,6 +20,7 @@ I wanted to try server less hence below tech stack.
 6. Vanilla JS, Jquery.
 7. Attack Protection with google nocaptcha[invisiable]
 8. CSS most from https://github.com/josdejong/jsoneditor/
+9. Google Analytics
 
 # TODOs
 1. Structure Code Base
