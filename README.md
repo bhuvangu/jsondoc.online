@@ -21,6 +21,12 @@ I wanted to try server less hence below tech stack.
 7. Attack Protection with google nocaptcha[invisiable]
 8. CSS most from https://github.com/josdejong/jsoneditor/
 
+# TODOs
+1. Structure Code Base
+2. Introduce versioning
+3. Remember collapse state of the tree
 
+
+# HELP GIF
 
 ![helpGIF](/helpGIF.gif)
